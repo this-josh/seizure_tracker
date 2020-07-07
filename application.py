@@ -14,12 +14,9 @@ app = dash.Dash(__name__, server=server)
 
 # df = pd.read_csv('https://gist.githubusercontent.com/chriddyp/5d1ea79569ed194d432e56108a04d188/raw/a9f9e8076b837d541398e999dcbac2b2826a81f8/gdp-life-exp-2007.csv')	
 
-# fig = px.scatter(df, x="gdp per capita", y="life expectancy", 
-#                  size="population", color="continent", hover_name="country", 
-#                  log_x=True, size_max=60)
 
 df_url='https://docs.google.com/spreadsheets/d/e/2PACX-1vT1E1Y9IohHUf_WI6bOaJ162ZnRIv39tJbVF8C7Ow0-wqN-DDxslgTfhsUwvQUqoXn-grW89r_BRIyw/pub?gid=0&single=true&output=csv'
-df=get_data(df_url, print_tail=True)
+df=get_data(df_url, print_tail=False)
 clusters = get_clusters(df)
 cluster_info = get_cluster_info(clusters)
 fig = make_fig(cluster_info)
@@ -38,9 +35,8 @@ app.layout = html.Div([
 )
 
 application = app.server
-print(type(application))
 if __name__ == '__main__':
     application.debug = True
-    application.run(host='192.168.1.213')
+    application.run()# host='192.168.1.213'
     # application.run(debug=False, port=8080)
 
