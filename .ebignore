@@ -1,0 +1,8 @@
+bono/
+lambda/
+__pycache__/
+old_versions/
+
+*.pyc
+*.zip
+.vscode/*
