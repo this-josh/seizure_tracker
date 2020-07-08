@@ -8,6 +8,7 @@ def get_data(df_url, print_tail=False):
     df=pd.read_csv(df_url, names=['Seizure'])
     df['Seizure'] = pd.to_datetime(df['Seizure'])
     df = df.set_index('Seizure')
+    # df.index.astype('datetime64[ns]')
     if print_tail:
         print(df.tail())
     return df
@@ -46,7 +47,8 @@ def make_timeseries(cluster_info):
         xaxis_title="Time",
         yaxis_title="Number of seizures in the cluster",
     )
-    fig = sort_font(fig)
+    fig = sort_font(fig
+    )
     return fig
 
 def sort_font(fig):
@@ -76,3 +78,4 @@ def make_hist(interval_df):
         )
     fig = sort_font(fig)
     return fig
+
