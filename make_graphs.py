@@ -40,7 +40,7 @@ def make_fig_text(cluster_info):
         custom_text.append([row.start.strftime('%H:%M %d/%m/%Y'),row.end.strftime('%H:%M %d/%m/%Y')])
     return custom_text
 
-def make_fig(cluster_info):
+def make_timeseries(cluster_info):
     ms_in_day = 86400000
     fig = go.Figure()
     
