@@ -1,7 +1,8 @@
 import pandas as pd
-import datetime as dt
 import plotly.graph_objects as go
 import numpy as np
+
+from statistical_params import get_cluster_info, get_clusters, get_intervals
 
 def get_data(df_url, print_tail=False):
     df=pd.read_csv(df_url, names=['Seizure'])
@@ -10,29 +11,6 @@ def get_data(df_url, print_tail=False):
     if print_tail:
         print(df.tail())
     return df
-
-def get_clusters(df, gap = np.timedelta64(2,'D')):
-    clusters = []
-    cont=True
-    ii = 0
-    while cont:
-        a = df.index[ii]
-        start = a-gap
-        end= a+gap
-        clusters.append(df[start:end])
-        ii += len(df[start:end])
-        if ii>= len(df):
-            cont = False
-    return clusters
-
-def get_cluster_info(clusters):
-    cluster_info = {}
-    for cluster in clusters:
-        cluster_info[len(cluster_info)] = {'start':cluster.iloc[0].name, 'end': cluster.iloc[-1].name, 'number': len(cluster), 'width':cluster.iloc[-1].name-cluster.iloc[0].name}
-    cluster_info = pd.DataFrame.from_dict(cluster_info, orient='index')
-    cluster_info.loc[:,'middle'] = cluster_info.loc[:,'start']+dt.timedelta(days=0.5)
-    return cluster_info
-
 
 def make_fig_text(cluster_info):
     custom_text = []
@@ -67,6 +45,11 @@ def make_timeseries(cluster_info):
         title_text='Bono seizure clusters over time',
         xaxis_title="Time",
         yaxis_title="Number of seizures in the cluster",
+    )
+    return fig
+
+def sort_font(fig):
+    fig.update_layout(
         font=dict(
             size=18,
         ),
@@ -74,3 +57,28 @@ def make_timeseries(cluster_info):
     )
     return fig
 
+# def make_hist(cluster_info):
+#     intervals = get_intervals(cluster_info)
+#     hist = go.Figure()
+#     hist.add_trace(go.Bar(x=df.interval, y=df.prev_cluster_size))
+#     hist.show()
+#     print(df.head())
+
+def make_hist(interval_df):
+    print(interval_df)
+    fig = go.Figure()
+    fig.add_trace(go.Histogram(x=interval_df.interval_days, xbins=dict(start=0, end=30, size=2), marker=dict(
+                    color='red',
+                ),opacity=0.5))
+
+    fig.update_layout(xaxis = dict(
+            tickmode = 'linear',
+            tick0 = 1,
+        ))
+    fig.update_layout(
+            title_text='Days since previous seizure',
+            xaxis_title="Days",
+            yaxis_title="Number of times this interval occured",
+        )
+    fig = sort_font(fig)
+    return fig

@@ -5,8 +5,8 @@ from dash.dependencies import Input, Output
 import pandas as pd
 import flask
 import plotly.express as px
-from make_graphs import get_data,get_clusters, get_cluster_info, make_fig
-from statistical_params import most_recent_seizure
+from make_graphs import get_data, make_timeseries, make_hist
+from statistical_params import most_recent_seizure, get_clusters, get_cluster_info, get_intervals
 
 external_style_sheet = 'https://codepen.io/chriddyp/pen/bWLwgP.css'
 server = flask.Flask(__name__)
@@ -16,7 +16,7 @@ df_url='https://docs.google.com/spreadsheets/d/e/2PACX-1vT1E1Y9IohHUf_WI6bOaJ162
 df=get_data(df_url, print_tail=False)
 clusters = get_clusters(df)
 cluster_info = get_cluster_info(clusters)
-
+intervals = get_intervals(cluster_info)
 days_since = most_recent_seizure(df)
 
 
@@ -76,11 +76,10 @@ app.layout = html.Div([
 @app.callback(Output(component_id='bono-seizures', component_property='figure'), [Input(component_id='graph-type', component_property='value')])
 def update_fig(fig_type):
     if fig_type == 'bars_time_comparison':
-        df = px.data.iris()
-        fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species")
+        fig = make_hist(intervals)
         return fig
     fig = make_timeseries(cluster_info)
-    fig.update_layout(autosize=True)#, width=900, height=500)
+    # fig.update_layout(autosize=True)#, width=900, height=500)
 
     return fig
 
