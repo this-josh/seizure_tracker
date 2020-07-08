@@ -46,6 +46,7 @@ def make_timeseries(cluster_info):
         xaxis_title="Time",
         yaxis_title="Number of seizures in the cluster",
     )
+    fig = sort_font(fig)
     return fig
 
 def sort_font(fig):
@@ -56,13 +57,6 @@ def sort_font(fig):
         showlegend=False
     )
     return fig
-
-# def make_hist(cluster_info):
-#     intervals = get_intervals(cluster_info)
-#     hist = go.Figure()
-#     hist.add_trace(go.Bar(x=df.interval, y=df.prev_cluster_size))
-#     hist.show()
-#     print(df.head())
 
 def make_hist(interval_df):
     print(interval_df)
