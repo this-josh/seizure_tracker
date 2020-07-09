@@ -77,11 +77,6 @@ def update_fig(fig_type):
 
     return fig
 
-@server.route("/dash")
-def MyDashApp():
-    app.title = "Title"
-    return app.index()
-
 application = app.server
 if __name__ == '__main__':
     application.run(debug=True)#, port=8000)# host='192.168.1.213'
