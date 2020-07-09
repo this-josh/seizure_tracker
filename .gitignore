@@ -4,6 +4,7 @@
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 
+keys/
 bono/
 lambda/
 *.pyc
