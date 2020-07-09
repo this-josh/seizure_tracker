@@ -2,8 +2,11 @@ bono/
 lambda/
 __pycache__/
 old_versions/
+env_files/
+keys/
 
 *.pyc
 *.zip
 .vscode/
 *.ipynb
+*.pem
