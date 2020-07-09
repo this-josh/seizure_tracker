@@ -9,6 +9,9 @@ from make_graphs import make_timeseries, make_hist
 from statistical_params import most_recent_seizure, get_clusters, get_cluster_info, get_intervals
 from inout import get_data
 
+# import os
+# assets_path = os.getcwd() +'/src/new_assets'
+
 external_style_sheet = 'https://codepen.io/chriddyp/pen/bWLwgP.css'
 server = flask.Flask(__name__)
 app = dash.Dash(__name__, server=server)#, external_stylesheets=external_style_sheet)
@@ -20,7 +23,7 @@ cluster_info = get_cluster_info(clusters)
 intervals = get_intervals(cluster_info)
 days_since = most_recent_seizure(df)
 
-
+app.title = 'Seizure Tracker'
 app.layout = html.Div([
 
     html.H1(
@@ -74,6 +77,10 @@ def update_fig(fig_type):
 
     return fig
 
+@server.route("/dash")
+def MyDashApp():
+    app.title = "Title"
+    return app.index()
 
 application = app.server
 if __name__ == '__main__':
