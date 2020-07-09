@@ -7,7 +7,7 @@ import time
 
 def most_recent_seizure(df: pd.DataFrame):
     most_recent = df.index[-1]
-    time_diff = datetime.now(pytz.timezone('Europe/London')) - most_recent
+    time_diff = datetime.now(pytz.utc) - most_recent
     return time_diff.days
 
 def get_clusters(df, gap = timedelta(days=2)):

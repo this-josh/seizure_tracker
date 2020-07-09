@@ -5,8 +5,9 @@ from dash.dependencies import Input, Output
 import pandas as pd
 import flask
 import plotly.express as px
-from make_graphs import get_data, make_timeseries, make_hist
+from make_graphs import make_timeseries, make_hist
 from statistical_params import most_recent_seizure, get_clusters, get_cluster_info, get_intervals
+from inout import get_data
 
 external_style_sheet = 'https://codepen.io/chriddyp/pen/bWLwgP.css'
 server = flask.Flask(__name__)
@@ -61,17 +62,7 @@ app.layout = html.Div([
 
 ])
 
-# @app.callback(Output['new_graph', 'fig' ],
-#     [Input('city', 'value')])
-# def update_thing(city):
-#     print(city)
-#     #TODO: ADD RADio buttons for graph selection
-#     if city == 'NYC':
-#         df = px.data.iris()
-#         fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species")
-#         return fig
 
-# print(help(app.callback))
 
 @app.callback(Output(component_id='bono-seizures', component_property='figure'), [Input(component_id='graph-type', component_property='value')])
 def update_fig(fig_type):
@@ -86,8 +77,7 @@ def update_fig(fig_type):
 
 application = app.server
 if __name__ == '__main__':
-    application.debug = True
-    application.run(host = '127.0.0.1', port=5000)# host='192.168.1.213'
+    application.run(debug=True)#, port=8000)# host='192.168.1.213'
     # application.run(debug=False, port=8080)
 
 
