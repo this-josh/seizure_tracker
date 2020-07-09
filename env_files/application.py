@@ -13,8 +13,7 @@ from inout import get_data
 server = flask.Flask(__name__)
 app = dash.Dash(__name__, server=server)
 
-df_url='https://docs.google.com/spreadsheets/d/e/2PACX-1vT1E1Y9IohHUf_WI6bOaJ162ZnRIv39tJbVF8C7Ow0-wqN-DDxslgTfhsUwvQUqoXn-grW89r_BRIyw/pub?gid=0&single=true&output=csv'
-df=get_data(df_url, print_tail=False)
+df=get_data()
 clusters = get_clusters(df)
 cluster_info = get_cluster_info(clusters)
 intervals = get_intervals(cluster_info)
