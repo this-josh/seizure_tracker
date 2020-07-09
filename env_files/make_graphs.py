@@ -1,6 +1,5 @@
 import pandas as pd
 import plotly.graph_objects as go
-import numpy as np
 from typing import Dict, Union, List
 
 from statistical_params import get_cluster_info, get_clusters, get_intervals
