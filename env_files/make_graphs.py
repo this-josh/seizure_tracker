@@ -1,25 +1,44 @@
 import pandas as pd
 import plotly.graph_objects as go
 import numpy as np
+from typing import Dict, Union, List
 
 from statistical_params import get_cluster_info, get_clusters, get_intervals
 
-def get_data(df_url, print_tail=False):
-    df=pd.read_csv(df_url, names=['Seizure'])
-    df['Seizure'] = pd.to_datetime(df['Seizure'])
-    df = df.set_index('Seizure')
-    # df.index.astype('datetime64[ns]')
-    if print_tail:
-        print(df.tail())
-    return df
 
-def make_fig_text(cluster_info):
+def make_fig_text(cluster_info: Dict[int, Dict[str, Union[pd.Timestamp, int]]]) -> List[List[str]]:
+    """
+    Create a list of the start and end times of each cluster
+
+    Parameters
+    ----------
+    cluster_info : Dict[int, Dict[str, Union[pd.Timestamp, int]]]
+        Dictionary containing info on each cluster
+
+    Returns
+    -------
+    List[List[str]]
+        A list of start and end times for each cluster
+    """
     custom_text = []
     for index,row in cluster_info.iterrows():
         custom_text.append([row.start.strftime('%H:%M %d/%m/%Y'),row.end.strftime('%H:%M %d/%m/%Y')])
     return custom_text
 
-def make_timeseries(cluster_info):
+def make_timeseries(cluster_info: Dict[int, Dict[str, Union[pd.Timestamp, int]]]) -> go.Figure:
+    """
+    Make bar chart showing all clusters against time
+
+    Parameters
+    ----------
+    cluster_info : Dict[int, Dict[str, Union[pd.Timestamp, int]]]
+        Info on each cluster
+
+    Returns
+    -------
+    go.Figure
+        A bar chart showing all clusters against time
+    """
     ms_in_day = 86400000
     fig = go.Figure()
     
@@ -51,7 +70,20 @@ def make_timeseries(cluster_info):
     )
     return fig
 
-def sort_font(fig):
+def sort_font(fig: go.Figure) -> go.Figure:
+    """
+    Change the font size and remove legend
+
+    Parameters
+    ----------
+    fig : go.Figure
+        A plotly figure
+
+    Returns
+    -------
+    go.Figure
+        A plotly figure with the updates
+    """
     fig.update_layout(
         font=dict(
             size=18,
@@ -60,7 +92,20 @@ def sort_font(fig):
     )
     return fig
 
-def make_hist(interval_df):
+def make_hist(interval_df: pd.DataFrame) -> go.Figure:
+    """
+    Make histogram for the time between clusters
+
+    Parameters
+    ----------
+    interval_df : pd.DataFrame
+        A df containing interval_days and prev_cluster_size
+
+    Returns
+    -------
+    go.Figure
+        A histogram showing the time between clusters
+    """
     fig = go.Figure()
     fig.add_trace(go.Histogram(x=interval_df.interval_days, xbins=dict(start=0, end=30, size=2), marker=dict(
                     color='red',

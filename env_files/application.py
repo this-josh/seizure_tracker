@@ -4,7 +4,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import pandas as pd
 import flask
-import plotly.express as px
+import plotly.graph_objects as go
 from make_graphs import make_timeseries, make_hist
 from statistical_params import most_recent_seizure, get_clusters, get_cluster_info, get_intervals
 from inout import get_data
@@ -22,6 +22,10 @@ clusters = get_clusters(df)
 cluster_info = get_cluster_info(clusters)
 intervals = get_intervals(cluster_info)
 days_since = most_recent_seizure(df)
+
+fig = make_hist(intervals)
+fig = make_timeseries(cluster_info)
+
 
 app.title = 'Seizure Tracker'
 app.layout = html.Div([
@@ -68,7 +72,20 @@ app.layout = html.Div([
 
 
 @app.callback(Output(component_id='bono-seizures', component_property='figure'), [Input(component_id='graph-type', component_property='value')])
-def update_fig(fig_type):
+def update_fig(fig_type: str) -> go.Figure:
+    """
+    Based upon the radio buttons, present the correct fig
+
+    Parameters
+    ----------
+    fig_type : str
+        The radio button selected
+
+    Returns
+    -------
+    go.Figure
+        The appropriate figure
+    """
     if fig_type == 'bars_time_comparison':
         fig = make_hist(intervals)
         return fig
