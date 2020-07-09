@@ -9,12 +9,9 @@ from make_graphs import make_timeseries, make_hist
 from statistical_params import most_recent_seizure, get_clusters, get_cluster_info, get_intervals
 from inout import get_data
 
-# import os
-# assets_path = os.getcwd() +'/src/new_assets'
 
-external_style_sheet = 'https://codepen.io/chriddyp/pen/bWLwgP.css'
 server = flask.Flask(__name__)
-app = dash.Dash(__name__, server=server)#, external_stylesheets=external_style_sheet)
+app = dash.Dash(__name__, server=server)
 
 df_url='https://docs.google.com/spreadsheets/d/e/2PACX-1vT1E1Y9IohHUf_WI6bOaJ162ZnRIv39tJbVF8C7Ow0-wqN-DDxslgTfhsUwvQUqoXn-grW89r_BRIyw/pub?gid=0&single=true&output=csv'
 df=get_data(df_url, print_tail=False)
@@ -58,15 +55,10 @@ app.layout = html.Div([
 
     dcc.Graph(
         id='bono-seizures',
-        # figure=(),
-        # responsive='auto',
         config={'responsive':'auto'}
-        # config={'fullFrame':True, 'responsive': True, 'autosize':False, 'frameMargins':0.01}
     ),
 
     
-    # style={'width': '100%', 'height': '98%'}),
-
 ])
 
 
@@ -90,7 +82,6 @@ def update_fig(fig_type: str) -> go.Figure:
         fig = make_hist(intervals)
         return fig
     fig = make_timeseries(cluster_info)
-    # fig.update_layout(autosize=True)#, width=900, height=500)
 
     return fig
 
