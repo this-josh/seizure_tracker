@@ -83,19 +83,11 @@ def update_fig(fig_type):
 
     return fig
 
-@app.callback(
-    Output(component_id='my-output', component_property='children'),
-    [Input(component_id='my-input', component_property='value')]
-)
-def update_output_div(input_value):
-    print(input_value)
-    return 'Output: {}'.format(input_value)
-
 
 application = app.server
 if __name__ == '__main__':
     application.debug = True
-    application.run()# host='192.168.1.213'
+    application.run(host = '127.0.0.1', port=5000)# host='192.168.1.213'
     # application.run(debug=False, port=8080)
 
 

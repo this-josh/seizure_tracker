@@ -61,7 +61,6 @@ def sort_font(fig):
     return fig
 
 def make_hist(interval_df):
-    print(interval_df)
     fig = go.Figure()
     fig.add_trace(go.Histogram(x=interval_df.interval_days, xbins=dict(start=0, end=30, size=2), marker=dict(
                     color='red',
