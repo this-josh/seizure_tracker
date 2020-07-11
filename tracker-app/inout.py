@@ -1,6 +1,6 @@
 import pandas as pd
 
-def get_data(df_url: str = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT1E1Y9IohHUf_WI6bOaJ162ZnRIv39tJbVF8C7Ow0-wqN-DDxslgTfhsUwvQUqoXn-grW89r_BRIyw/pub?gid=0&single=true&output=csv', print_tail: bool = False) -> pd.DataFrame:
+def get_data(df_url: str, print_tail: bool = False) -> pd.DataFrame:
     """Read the seizure csv, return as df with utc datetime index
 
     Parameters
