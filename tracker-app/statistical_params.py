@@ -22,6 +22,8 @@ def most_recent_seizure(df: pd.DataFrame) -> int:
     
     most_recent = df.index[-1]
     time_diff = datetime.now(pytz.utc) - most_recent
+    if time_diff.days < 0:
+        return 0
     return time_diff.days
 
 def get_clusters(df: pd.DataFrame, gap_days=2) -> List[pd.DataFrame]:
