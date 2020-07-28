@@ -19,9 +19,6 @@ cluster_info = get_cluster_info(clusters)
 intervals = get_intervals(cluster_info)
 days_since = most_recent_seizure(df)
 
-fig = make_hist(intervals)
-fig = make_timeseries(cluster_info)
-
 
 app.title = 'Seizure Tracker'
 app.layout = html.Div([
