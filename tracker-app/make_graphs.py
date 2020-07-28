@@ -1,6 +1,7 @@
 import pandas as pd
 import plotly.graph_objects as go
 from typing import Dict, Union, List
+from datetime import datetime as dt
 
 from statistical_params import get_cluster_info, get_clusters, get_intervals
 
@@ -59,12 +60,14 @@ def make_timeseries(cluster_info: Dict[int, Dict[str, Union[pd.Timestamp, int]]]
         line=dict(color='red', width=1, dash='dot'),
         line_shape='spline'
     ))
-
     fig.update_layout(
         title_text='Bono seizure clusters over time',
         xaxis_title="Time",
         yaxis_title="Number of seizures in the cluster",
+        xaxis_range=[cluster_info.loc[0]['start'],
+                               dt.now()]
     )
+    
     fig = sort_font(fig
     )
     return fig
