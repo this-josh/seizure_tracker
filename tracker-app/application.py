@@ -6,7 +6,7 @@ import pandas as pd
 import flask
 import plotly.graph_objects as go
 from make_graphs import make_timeseries, make_hist
-from statistical_params import most_recent_seizure, get_clusters, get_cluster_info, get_intervals
+from statistical_params import most_recent_seizure, get_clusters, get_cluster_info, get_intervals, likelihood_of_seizure
 from inout import get_data
 
 
@@ -18,7 +18,7 @@ clusters = get_clusters(df)
 cluster_info = get_cluster_info(clusters)
 intervals = get_intervals(cluster_info)
 days_since = most_recent_seizure(df)
-
+likelihood = likelihood_of_seizure(days_since, intervals)
 
 app.title = 'Seizure Tracker'
 app.layout = html.Div([
@@ -31,7 +31,7 @@ app.layout = html.Div([
 
     html.Div(
         dcc.Markdown(f'''
-        The last seizure was **{days_since}** days ago.
+        The last seizure was **{days_since}** days ago, giving an estimated **{likelihood}%** chance of a seizure within the next 24 hours.
         '''), style={
             'textAlign': 'center',
         }),

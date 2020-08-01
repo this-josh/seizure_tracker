@@ -1,9 +1,34 @@
 import pandas as pd
 import datetime as dt
+import numpy as np
 from datetime import timedelta, datetime
 import pytz
 import time
 from typing import List, Dict, Union
+
+def _remove_outliers(values: pd.Series, num_sd: int = 2) -> pd.Series:
+    """
+    Remove outliers from a list of values
+
+    Parameters
+    ----------
+    values : pd.Series
+        A list of values
+    num_sd : int, optional
+        The number of standard deviations from the median to remove, by default 2
+
+    Returns
+    -------
+    pd.Series
+        The input series with outliers removed
+    """
+    sd = np.std(values)
+    median = np.median(values)
+    lower_bound  = median - (num_sd*sd)
+    upper_bound = median + (num_sd*sd)
+    if lower_bound < 0:
+        lower_bound = 0
+    return values[np.logical_and(values>=lower_bound, values<=upper_bound)]
 
 def most_recent_seizure(df: pd.DataFrame) -> int:
     """
@@ -101,3 +126,13 @@ def get_intervals(cluster_info: Dict[int, Dict[str, Union[pd.Timestamp, int]]]) 
         intervals[index] = {'interval_days': this_interval, 'prev_cluster_size': cluster_info.loc[index - 1].number}
     intervals = pd.DataFrame.from_dict(intervals, orient='index')
     return intervals
+
+def likelihood_of_seizure(days_since, intervals):
+    """ compare days since and the histogram to find the likelihood of a seizure occuring within the next 48 hours."""
+    interval_list = intervals.interval_days.sort_values()
+    interval_list = _remove_outliers(interval_list, num_sd=2)
+    intervals_lower = interval_list[interval_list<=days_since]
+    likelihood = len(intervals_lower) / len(interval_list)
+    return int(likelihood * 100)
+
+
