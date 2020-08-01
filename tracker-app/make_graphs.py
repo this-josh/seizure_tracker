@@ -109,7 +109,7 @@ def make_hist(interval_df: pd.DataFrame) -> go.Figure:
         A histogram showing the time between clusters
     """
     fig = go.Figure()
-    fig.add_trace(go.Histogram(x=interval_df.interval_days, xbins=dict(start=0, end=30, size=2), marker=dict(
+    fig.add_trace(go.Histogram(x=interval_df.interval_days, xbins=dict(start=0, end=40, size=1), marker=dict(
                     color='red',
                 ),opacity=0.5))
 
