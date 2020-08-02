@@ -30,7 +30,7 @@ app.layout = html.Div([
         }),
 
     html.Div(
-        dcc.Markdown(f"""The last seizure was **{days_since}** days ago, giving an estimated **{likelihood}%** chance of a seizure within the next 24 hours."""),
+        dcc.Markdown(f"""The last seizure was **{days_since}** days ago, making the current estimated chance of a seizure **{likelihood}%**."""),
              style={
                 'textAlign': 'center',
         }),
