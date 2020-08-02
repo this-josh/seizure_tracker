@@ -24,7 +24,7 @@ app.title = 'Seizure Tracker'
 app.layout = html.Div([
 
     html.H1(
-        children='Seizure Tracker from Github',
+        children='Seizure Tracker from Github1',
         style={
             'textAlign': 'center',
         }),
