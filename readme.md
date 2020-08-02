@@ -1,6 +1,5 @@
 # Seizure Tracker  
 
-#TODO: add github actions image
 ![Build Status](https://github.com/this-josh/seizure_tracker/workflows/deploy-to-eb/badge.svg)
 
 
