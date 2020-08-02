@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 from typing import Dict, Union, List
 from datetime import datetime as dt
 
-from statistical_params import get_cluster_info, get_clusters, get_intervals
+from trackerApp.statistical_params import get_cluster_info, get_clusters, get_intervals
 
 
 def make_fig_text(cluster_info: Dict[int, Dict[str, Union[pd.Timestamp, int]]]) -> List[List[str]]:

@@ -5,9 +5,9 @@ from dash.dependencies import Input, Output
 import pandas as pd
 import flask
 import plotly.graph_objects as go
-from make_graphs import make_timeseries, make_hist
-from statistical_params import most_recent_seizure, get_clusters, get_cluster_info, get_intervals, likelihood_of_seizure
-from inout import get_data
+from trackerApp.make_graphs import make_timeseries, make_hist
+from trackerApp.statistical_params import most_recent_seizure, get_clusters, get_cluster_info, get_intervals, likelihood_of_seizure
+from trackerApp.inout import get_data
 
 
 server = flask.Flask(__name__)
@@ -30,10 +30,9 @@ app.layout = html.Div([
         }),
 
     html.Div(
-        dcc.Markdown(f'''
-        The last seizure was **{days_since}** days ago, giving an estimated **{likelihood}%** chance of a seizure within the next 24 hours.
-        '''), style={
-            'textAlign': 'center',
+        dcc.Markdown(f"""The last seizure was **{days_since}** days ago, giving an estimated **{likelihood}%** chance of a seizure within the next 24 hours."""),
+             style={
+                'textAlign': 'center',
         }),
 
     html.Div([
