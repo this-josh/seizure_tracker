@@ -127,7 +127,7 @@ def get_intervals(cluster_info: Dict[int, Dict[str, Union[pd.Timestamp, int]]]) 
     intervals = pd.DataFrame.from_dict(intervals, orient='index')
     return intervals
 
-def likelihood_of_seizure(days_since, intervals):
+def likelihood_of_seizure(days_since : int, intervals: pd.DataFrame) -> int:
     """ compare days since and the histogram to find the likelihood of a seizure occuring within the next 48 hours."""
     interval_list = intervals.interval_days.sort_values()
     interval_list = _remove_outliers(interval_list, num_sd=2)
