@@ -53,7 +53,7 @@ def most_recent_seizure(df: pd.DataFrame) -> int:
 
 def get_clusters(df: pd.DataFrame, gap_days=2) -> List[pd.DataFrame]:
     """
-    Take the seizurs csv and group events into clusters
+    Take the seizures csv and group events into clusters
 
     Parameters
     ----------
