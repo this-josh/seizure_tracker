@@ -1,4 +1,8 @@
-# Seizure Tracker
+# Seizure Tracker  
+
+#TODO: add github actions image
+![Build Status](https://github.com/this-josh/seizure_tracker/workflows/deploy-to-eb/badge.svg)
+
 
 This is a simple Plotly dash app which can be used to view seizure clusters which are read from a csv with the intention being to predict forthcoming seizures. 
 
