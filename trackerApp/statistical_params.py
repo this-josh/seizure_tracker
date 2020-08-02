@@ -127,12 +127,55 @@ def get_intervals(cluster_info: Dict[int, Dict[str, Union[pd.Timestamp, int]]]) 
     intervals = pd.DataFrame.from_dict(intervals, orient='index')
     return intervals
 
-def likelihood_of_seizure(days_since : int, intervals: pd.DataFrame) -> int:
-    """ compare days since and the histogram to find the likelihood of a seizure occuring within the next 48 hours."""
+def likelihood_of_seizure(days_since : int, intervals: pd.DataFrame) -> List[int]:
+    """
+    Find likelihood of a seizure and when this will next change
+
+    compare days since and the histogram to find the likelihood of a seizure occuring within the next 48 hours.
+
+    Parameters
+    ----------
+    days_since : int
+        Number of days since a seizure
+    intervals : pd.DataFrame
+        Interval info
+
+    Returns
+    -------
+    List[int]
+        Likelihood of seizure as a %, and how many days till it will update.
+    """
     interval_list = intervals.interval_days.sort_values()
     interval_list = _remove_outliers(interval_list, num_sd=2)
+    
+    likelihood = _get_likelihood(interval_list, days_since)
+
+    next_interval = interval_list[interval_list > days_since].iloc[0]
+    next_likelihood = _get_likelihood(interval_list, next_interval)
+    
+    next_updates = next_interval-days_since
+    return likelihood, next_updates, next_likelihood
+
+def _get_likelihood(interval_list: pd.Series, days_since: int) -> int:
+    """
+    Given a list of intervals and days since, get a the likelihood
+
+    Parameters
+    ----------
+    interval_list : pd.Series
+        A list of intervals
+    days_since : int
+        The number of days since a seizure
+
+    Returns
+    -------
+    int
+        The likelihood as a percentage
+    """
     intervals_lower = interval_list[interval_list<=days_since]
-    likelihood = len(intervals_lower) / len(interval_list)
-    return int(likelihood * 100)
+    return int(len(intervals_lower) / len(interval_list) * 100)
+
+    
+
 
 
