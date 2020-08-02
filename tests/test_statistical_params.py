@@ -39,3 +39,17 @@ def test_get_clusters():
 
     for cluster in clusters:
         assert len(cluster) == len_cluster
+
+def test_get_cluster_info():
+    num_clusters = 6
+    len_cluster = 2
+    df = make_full_df(len_cluster=len_cluster, num_clusters=num_clusters)
+    clusters = get_clusters(df)
+    cluster_info = get_cluster_info(clusters)
+
+    for cluster in range(len(cluster_info)):
+        assert cluster_info.iloc[cluster].start == clusters[cluster].index[0]
+        assert cluster_info.iloc[cluster].end == clusters[cluster].index[1]
+        assert cluster_info.iloc[cluster].number == len_cluster
+        assert cluster_info.iloc[cluster].width == dt.timedelta(days=len_cluster-1)
+
