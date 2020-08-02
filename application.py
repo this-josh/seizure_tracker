@@ -18,7 +18,7 @@ clusters = get_clusters(df)
 cluster_info = get_cluster_info(clusters)
 intervals = get_intervals(cluster_info)
 days_since = most_recent_seizure(df)
-likelihood = likelihood_of_seizure(days_since, intervals)
+likelihood, next_updates, next_likelihood = likelihood_of_seizure(days_since, intervals)
 
 app.title = 'Seizure Tracker'
 app.layout = html.Div([
@@ -30,11 +30,16 @@ app.layout = html.Div([
         }),
 
     html.Div(
-        dcc.Markdown(f"""The last seizure was **{days_since}** days ago, making the current estimated chance of a seizure **{likelihood}%**."""),
+        dcc.Markdown(f"""The last seizure was **{days_since}** days ago"""),
              style={
                 'textAlign': 'center',
         }),
-
+    html.Div(
+        dcc.Markdown(f"""Making the current likelihood of a seizure **{likelihood}%**, this will update to {next_likelihood}% in {next_updates} days."""),
+        style={
+            'textAlign': 'center',
+        }
+    ),
     html.Div([
     dcc.RadioItems(
         id = 'graph-type',
