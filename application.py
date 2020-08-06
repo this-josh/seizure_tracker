@@ -92,7 +92,7 @@ def update_fig(fig_type: str) -> go.Figure:
 
 application = app.server
 if __name__ == '__main__':
-    application.run(debug=True)#, port=8000)# host='192.168.1.213'
+    application.run(debug=False)#, port=8000)# host='192.168.1.213'
     # application.run(debug=False, port=8080)
 
 
