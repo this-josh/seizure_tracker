@@ -2,6 +2,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from typing import Dict, Union, List
 from datetime import datetime as dt
+from datetime import timedelta
 
 from trackerApp.statistical_params import get_cluster_info, get_clusters, get_intervals
 
@@ -65,7 +66,7 @@ def make_timeseries(cluster_info: Dict[int, Dict[str, Union[pd.Timestamp, int]]]
         xaxis_title="Time",
         yaxis_title="Number of seizures in the cluster",
         xaxis_range=[cluster_info.loc[0]['start'],
-                               dt.now()]
+                               dt.now()+timedelta(days=1)]
     )
     
     fig = sort_font(fig
