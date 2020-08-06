@@ -19,11 +19,15 @@ cluster_info = get_cluster_info(clusters)
 intervals = get_intervals(cluster_info)
 days_since = most_recent_seizure(df)
 likelihood, next_updates, next_likelihood = likelihood_of_seizure(days_since, intervals)
+next_cluster_size = estimate_cluster_size(cluster_info, days_since)
 
-if days_since > 2:
+if days_since >= 2:
     likelihood_message = f"""Making the current likelihood of a seizure **{likelihood}%**, this will update to {next_likelihood}% in {next_updates} days."""
-else:
-    likelihood_message = f"""As the most recent seizure was only {days_since} days ago, it is possible the cluster is still active"""
+elif days_since == 1:
+    likelihood_message = f"""As the most recent seizure was only {days_since} day ago, it is possible the cluster is still active"""
+elif days_since == 0:
+    likelihood_message = f"""As the most recent seizure was today, it is possible the cluster is still active"""
+
 
 app.title = 'Seizure Tracker'
 app.layout = html.Div([
