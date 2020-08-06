@@ -22,8 +22,10 @@ def make_fig_text(cluster_info: Dict[int, Dict[str, Union[pd.Timestamp, int]]]) 
         A list of start and end times for each cluster
     """
     custom_text = []
-    for index,row in cluster_info.iterrows():
-        custom_text.append([row.start.strftime('%H:%M %d/%m/%Y'),row.end.strftime('%H:%M %d/%m/%Y')])
+    for index, row in cluster_info.iterrows():
+        start_time = row.start.astimezone('Europe/London').strftime('%H:%M %d/%m/%Y')
+        end_time = row.end.astimezone('Europe/London').strftime('%H:%M %d/%m/%Y')
+        custom_text.append([start_time, end_time])
     return custom_text
 
 def make_timeseries(cluster_info: Dict[int, Dict[str, Union[pd.Timestamp, int]]]) -> go.Figure:
