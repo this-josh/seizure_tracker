@@ -6,7 +6,7 @@ import pandas as pd
 import flask
 import plotly.graph_objects as go
 from trackerApp.make_graphs import make_timeseries, make_hist
-from trackerApp.statistical_params import most_recent_seizure, get_clusters, get_cluster_info, get_intervals, likelihood_of_seizure
+from trackerApp.statistical_params import most_recent_seizure, get_clusters, get_cluster_info, get_intervals, likelihood_of_seizure, estimate_cluster_size
 from trackerApp.inout import get_data
 
 
@@ -45,6 +45,13 @@ app.layout = html.Div([
             'textAlign': 'center',
         }
     ),
+    html.Div(
+        dcc.Markdown(next_cluster_size),
+        style={
+            'textAlign': 'center',
+        }
+    ),
+
     html.Div([
     dcc.RadioItems(
         id = 'graph-type',

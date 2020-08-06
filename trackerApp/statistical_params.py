@@ -177,5 +177,18 @@ def _get_likelihood(interval_list: pd.Series, days_since: int) -> int:
 
     
 
-
+def estimate_cluster_size(cluster_info, days_since) -> str:
+    """Estimate the size of the next cluster"""
+    clusters_ago = -1
+    seizure_text = 'The next cluster'
+    if days_since < 2:
+        # Possibly still in a cluster
+        clusters_ago = -2
+        seizure_text = 'This cluster'
+    last_cluster_size = cluster_info.iloc[clusters_ago].number
+    if last_cluster_size <= 3:
+        # Last cluster was smaller
+        return f'{seizure_text} is anticipated to be a large one, usually between 3 and 6 seizures'
+    else:
+        return f'{seizure_text} is anticipated to be a small one, usually 3 or less'
 
