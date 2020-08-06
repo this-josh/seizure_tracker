@@ -21,4 +21,4 @@ def get_data(df_url: str, print_tail: bool = False) -> pd.DataFrame:
     df = df.set_index('Seizure')
     if print_tail:
         print(df.tail())
-    return df
+    return df.sort_index()
