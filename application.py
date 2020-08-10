@@ -29,7 +29,7 @@ elif days_since == 0:
     likelihood_message = f"""As the most recent seizure was today, it is possible the cluster is still active"""
 
 
-app.title = 'Seizure Tracker'
+app.title = 'Seizure Tracker NS'
 app.layout = html.Div([
 
     html.H1(
