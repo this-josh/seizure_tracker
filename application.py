@@ -23,6 +23,9 @@ next_cluster_size = estimate_cluster_size(cluster_info, days_since)
 
 if days_since >= 2:
     likelihood_message = f"""Making the current likelihood of a seizure **{likelihood}%**, this will update to {next_likelihood}% in {next_updates} days."""
+    if isinstance(likelihood, str):
+        likelihood_message = f"""Making the current likelihood of a seizure **{likelihood}**, this will update to {next_likelihood}% in {next_updates} days."""
+
 elif days_since == 1:
     likelihood_message = f"""As the most recent seizure was only {days_since} day ago, it is possible the cluster is still active"""
 elif days_since == 0:
