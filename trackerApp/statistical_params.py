@@ -191,7 +191,7 @@ def estimate_cluster_size(cluster_info, days_since) -> str:
     last_cluster_size = cluster_info.iloc[clusters_ago].number
     if last_cluster_size <= 3:
         # Last cluster was smaller
-        return f'{seizure_text} is anticipated to be a large one, usually between 3 and 6 seizures'
+        return f'{seizure_text} is anticipated to be a large one, usually around 6 seizures'
     else:
         return f'{seizure_text} is anticipated to be a small one, usually 3 or less'
 
