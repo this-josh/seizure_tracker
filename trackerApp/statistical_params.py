@@ -173,7 +173,10 @@ def _get_likelihood(interval_list: pd.Series, days_since: int) -> int:
         The likelihood as a percentage
     """
     intervals_lower = interval_list[interval_list<=days_since]
-    return int(len(intervals_lower) / len(interval_list) * 100)
+    likelihood = int(len(intervals_lower) / len(interval_list) * 100)
+    if likelihood == 0:
+        return 'low'
+    return likelihood
 
     
 
