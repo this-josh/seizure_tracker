@@ -4,6 +4,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import pandas as pd
 import flask
+import os
 import plotly.graph_objects as go
 from trackerApp.make_graphs import make_timeseries, make_hist
 from trackerApp.statistical_params import most_recent_seizure, get_clusters, get_cluster_info, get_intervals, likelihood_of_seizure, estimate_cluster_size
@@ -12,8 +13,7 @@ from trackerApp.inout import get_data
 
 server = flask.Flask(__name__)
 app = dash.Dash(__name__, server=server)
-df_url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT1E1Y9IohHUf_WI6bOaJ162ZnRIv39tJbVF8C7Ow0-wqN-DDxslgTfhsUwvQUqoXn-grW89r_BRIyw/pub?gid=0&single=true&output=csv'
-df=get_data(df_url)
+df=get_data(os.getenv('SEIZURE_SHEET'))
 clusters = get_clusters(df)
 cluster_info = get_cluster_info(clusters)
 intervals = get_intervals(cluster_info)
