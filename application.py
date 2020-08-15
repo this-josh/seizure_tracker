@@ -5,6 +5,7 @@ from dash.dependencies import Input, Output
 import pandas as pd
 import flask
 import os
+from waitress import serve
 import plotly.graph_objects as go
 from trackerApp.make_graphs import make_timeseries, make_hist
 from trackerApp.statistical_params import most_recent_seizure, get_clusters, get_cluster_info, get_intervals, likelihood_of_seizure, estimate_cluster_size
@@ -106,9 +107,7 @@ def update_fig(fig_type: str) -> go.Figure:
 
 application = app.server
 if __name__ == '__main__':
-    application.run(debug=False)#, port=8000)# host='192.168.1.213'
-    # application.run(debug=False, port=8080)
-
+    serve(application, url_scheme='https')
 
 
 
