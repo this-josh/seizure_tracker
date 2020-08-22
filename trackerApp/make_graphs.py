@@ -98,7 +98,7 @@ def sort_font(fig: go.Figure) -> go.Figure:
     )
     return fig
 
-def make_hist(interval_df: pd.DataFrame) -> go.Figure:
+def make_cluster_hist(interval_df: pd.DataFrame) -> go.Figure:
     """
     Make histogram for the time between clusters
 
@@ -119,12 +119,10 @@ def make_hist(interval_df: pd.DataFrame) -> go.Figure:
 
     fig.update_layout(xaxis = dict(
             tickmode = 'linear',
-            tick0 = 1,
-        ))
-    fig.update_layout(
+            tick0 = 1),
             title_text='Days since previous seizure',
             xaxis_title="Days",
-            yaxis_title="Number of times this interval occured",
+            yaxis_title="Number of times this interval occurred",
         )
     fig = sort_font(fig)
     return fig
