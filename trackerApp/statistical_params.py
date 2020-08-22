@@ -6,6 +6,7 @@ import pytz
 import time
 from typing import List, Dict, Union
 
+
 def _remove_outliers(values: pd.Series, num_sd: int = 2) -> pd.Series:
     """
     Remove outliers from a list of values
@@ -24,11 +25,12 @@ def _remove_outliers(values: pd.Series, num_sd: int = 2) -> pd.Series:
     """
     sd = np.std(values)
     median = np.median(values)
-    lower_bound  = median - (num_sd*sd)
-    upper_bound = median + (num_sd*sd)
+    lower_bound = median - (num_sd * sd)
+    upper_bound = median + (num_sd * sd)
     if lower_bound < 0:
         lower_bound = 0
-    return values[np.logical_and(values>=lower_bound, values<=upper_bound)]
+    return values[np.logical_and(values >= lower_bound, values <= upper_bound)]
+
 
 def most_recent_seizure(df: pd.DataFrame) -> int:
     """
@@ -44,12 +46,13 @@ def most_recent_seizure(df: pd.DataFrame) -> int:
     int
         The number of days since a seizure
     """
-    
+
     most_recent = df.index[-1]
     time_diff = datetime.now(pytz.utc) - most_recent
     if time_diff.days < 0:
         return 0
     return time_diff.days
+
 
 def get_clusters(df: pd.DataFrame, gap_days=2) -> List[pd.DataFrame]:
     """
@@ -69,21 +72,24 @@ def get_clusters(df: pd.DataFrame, gap_days=2) -> List[pd.DataFrame]:
     """
     gap_days = timedelta(gap_days)
     clusters = []
-    cont=True
+    cont = True
     ii = 0
     while cont:
         a = df.index[ii]
         start = a - gap_days
-        if ii == 0: 
+        if ii == 0:
             start = a
         end = a + gap_days
         clusters.append(df[start:end])
         ii += len(df[start:end])
-        if ii>= len(df):
+        if ii >= len(df):
             cont = False
     return clusters
 
-def get_cluster_info(clusters: List[pd.DataFrame]) -> Dict[int, Dict[str, Union[pd.Timestamp, int]]]:
+
+def get_cluster_info(
+    clusters: List[pd.DataFrame],
+) -> Dict[int, Dict[str, Union[pd.Timestamp, int]]]:
     """
     Get info on each cluster (start, middle, end, size, and length)
 
@@ -99,12 +105,22 @@ def get_cluster_info(clusters: List[pd.DataFrame]) -> Dict[int, Dict[str, Union[
     """
     cluster_info = {}
     for cluster in clusters:
-        cluster_info[len(cluster_info)] = {'start':cluster.iloc[0].name, 'end': cluster.iloc[-1].name, 'number': len(cluster), 'width':cluster.iloc[-1].name-cluster.iloc[0].name}
-    cluster_info = pd.DataFrame.from_dict(cluster_info, orient='index')
-    cluster_info.loc[:, 'middle'] = cluster_info.loc[:, 'start'] + dt.timedelta(days=0.5)
+        cluster_info[len(cluster_info)] = {
+            "start": cluster.iloc[0].name,
+            "end": cluster.iloc[-1].name,
+            "number": len(cluster),
+            "width": cluster.iloc[-1].name - cluster.iloc[0].name,
+        }
+    cluster_info = pd.DataFrame.from_dict(cluster_info, orient="index")
+    cluster_info.loc[:, "middle"] = cluster_info.loc[:, "start"] + dt.timedelta(
+        days=0.5
+    )
     return cluster_info
 
-def get_intervals(cluster_info: Dict[int, Dict[str, Union[pd.Timestamp, int]]]) -> pd.DataFrame:
+
+def get_intervals(
+    cluster_info: Dict[int, Dict[str, Union[pd.Timestamp, int]]]
+) -> pd.DataFrame:
     """
     Given info on each cluster, find time between them
 
@@ -123,11 +139,15 @@ def get_intervals(cluster_info: Dict[int, Dict[str, Union[pd.Timestamp, int]]]) 
         if index == 0:
             continue
         this_interval = (row.start - cluster_info.loc[index - 1].end).days
-        intervals[index] = {'interval_days': this_interval, 'prev_cluster_size': cluster_info.loc[index - 1].number}
-    intervals = pd.DataFrame.from_dict(intervals, orient='index')
+        intervals[index] = {
+            "interval_days": this_interval,
+            "prev_cluster_size": cluster_info.loc[index - 1].number,
+        }
+    intervals = pd.DataFrame.from_dict(intervals, orient="index")
     return intervals
 
-def likelihood_of_seizure(days_since : int, intervals: pd.DataFrame) -> List[int]:
+
+def likelihood_of_seizure(days_since: int, intervals: pd.DataFrame) -> List[int]:
     """
     Find likelihood of a seizure and when this will next change
 
@@ -147,14 +167,15 @@ def likelihood_of_seizure(days_since : int, intervals: pd.DataFrame) -> List[int
     """
     interval_list = intervals.interval_days.sort_values()
     interval_list = _remove_outliers(interval_list, num_sd=2)
-    
+
     likelihood = _get_likelihood(interval_list, days_since)
 
     next_interval = interval_list[interval_list > days_since].iloc[0]
     next_likelihood = _get_likelihood(interval_list, next_interval)
-    
-    next_updates = next_interval-days_since
+
+    next_updates = next_interval - days_since
     return likelihood, next_updates, next_likelihood
+
 
 def _get_likelihood(interval_list: pd.Series, days_since: int) -> int:
     """
@@ -172,26 +193,24 @@ def _get_likelihood(interval_list: pd.Series, days_since: int) -> int:
     int
         The likelihood as a percentage
     """
-    intervals_lower = interval_list[interval_list<=days_since]
+    intervals_lower = interval_list[interval_list <= days_since]
     likelihood = int(len(intervals_lower) / len(interval_list) * 100)
     if likelihood == 0:
-        return 'low'
+        return "low"
     return likelihood
 
-    
 
 def estimate_cluster_size(cluster_info, days_since) -> str:
     """Estimate the size of the next cluster"""
     clusters_ago = -1
-    seizure_text = 'The next cluster'
+    seizure_text = "The next cluster"
     if days_since < 2:
         # Possibly still in a cluster
         clusters_ago = -2
-        seizure_text = 'This cluster'
+        seizure_text = "This cluster"
     last_cluster_size = cluster_info.iloc[clusters_ago].number
     if last_cluster_size <= 3:
         # Last cluster was smaller
-        return f'{seizure_text} is anticipated to be a large one, usually around 6 seizures'
+        return f"{seizure_text} is anticipated to be a large one, usually around 6 seizures"
     else:
-        return f'{seizure_text} is anticipated to be a small one, usually 3 or less'
-
+        return f"{seizure_text} is anticipated to be a small one, usually 3 or less"
