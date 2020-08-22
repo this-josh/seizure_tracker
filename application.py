@@ -7,7 +7,7 @@ import flask
 import os
 from waitress import serve
 import plotly.graph_objects as go
-from trackerApp.make_graphs import make_timeseries, make_hist
+from trackerApp.make_graphs import make_timeseries, make_cluster_hist, make_time_hist
 from trackerApp.statistical_params import most_recent_seizure, get_clusters, get_cluster_info, get_intervals, likelihood_of_seizure, estimate_cluster_size
 from trackerApp.inout import get_data
 
@@ -15,6 +15,7 @@ from trackerApp.inout import get_data
 server = flask.Flask(__name__)
 app = dash.Dash(__name__, server=server)
 df=get_data(os.getenv('SEIZURE_SHEET'))
+make_time_hist(df)
 clusters = get_clusters(df)
 cluster_info = get_cluster_info(clusters)
 intervals = get_intervals(cluster_info)
@@ -66,6 +67,8 @@ app.layout = html.Div([
         options=[
             {'label': 'Clusters over time', 'value': 'bars_timeseries'},
             {'label': 'Time since last cluster', 'value': 'bars_time_comparison'},
+            {'label': 'Hour of the day seizures have occured', 'value': 'seizure_hour_comparison'},
+
         ],
         value='bars_timeseries',
         labelStyle={'display': 'inline-block'}
@@ -99,7 +102,10 @@ def update_fig(fig_type: str) -> go.Figure:
         The appropriate figure
     """
     if fig_type == 'bars_time_comparison':
-        fig = make_hist(intervals)
+        fig = make_cluster_hist(intervals)
+        return fig
+    elif fig_type == 'seizure_hour_comparison':
+        fig = make_time_hist(df)
         return fig
     fig = make_timeseries(cluster_info)
 

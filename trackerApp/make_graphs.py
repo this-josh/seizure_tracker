@@ -3,6 +3,7 @@ import plotly.graph_objects as go
 from typing import Dict, Union, List
 from datetime import datetime as dt
 from datetime import timedelta
+import pytz
 
 from trackerApp.statistical_params import get_cluster_info, get_clusters, get_intervals
 
@@ -128,3 +129,32 @@ def make_hist(interval_df: pd.DataFrame) -> go.Figure:
     fig = sort_font(fig)
     return fig
 
+def make_time_hist(df: pd.DataFrame) -> go.Figure:
+    """
+    Make a histogram showing the number of times a seizure has occurred at each hour of the day
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The google sheet data
+
+    Returns
+    -------
+    go.Figure
+        The figure to show
+    """
+    cut_off = dt(year=2020, month=6, day=1)
+    cut_off = pytz.utc.localize(cut_off)
+    vals = df[cut_off:].index.hour
+    fig = go.Figure(go.Histogram(x=vals, marker=dict(color='red'), opacity=0.5, xbins=dict(size='H')))
+    fig.update_layout(
+            xaxis = dict(
+                tickmode = 'linear',
+                tick0 = 1),
+            title_text='A histogram showing the number of times a seizure has occurred at each hour',
+            xaxis_title="Hour of the day",
+            yaxis_title="Number of seizures",
+            bargap=0.1
+        )
+    fig = sort_font(fig)
+    return fig
