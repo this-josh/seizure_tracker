@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def get_data(df_url: str, print_tail: bool = False) -> pd.DataFrame:
     """Read the seizure csv, return as df with utc datetime index
 
@@ -16,9 +17,9 @@ def get_data(df_url: str, print_tail: bool = False) -> pd.DataFrame:
         The csv as a dataframe with a datetime index
     """
 
-    df=pd.read_csv(df_url, names=['Seizure'])
-    df['Seizure'] = pd.to_datetime(df['Seizure'],utc=True)
-    df = df.set_index('Seizure')
+    df = pd.read_csv(df_url, names=["Seizure"])
+    df["Seizure"] = pd.to_datetime(df["Seizure"], utc=True)
+    df = df.set_index("Seizure")
     if print_tail:
         print(df.tail())
     return df.sort_index()

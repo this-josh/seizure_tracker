@@ -1,12 +1,11 @@
 from setuptools import setup, find_packages
 
 
-
 with open("readme.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name="seizure_tracker", # Replace with your own username
+    name="seizure_tracker",  # Replace with your own username
     version="0.0.1",
     author="Josh Kirk",
     author_email="jarkirk[at]pm.me",
@@ -19,5 +18,5 @@ setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
+    python_requires=">=3.6",
 )
