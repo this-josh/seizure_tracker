@@ -170,10 +170,15 @@ def likelihood_of_seizure(days_since: int, intervals: pd.DataFrame) -> List[int]
 
     likelihood = _get_likelihood(interval_list, days_since)
 
-    next_interval = interval_list[interval_list > days_since].iloc[0]
-    next_likelihood = _get_likelihood(interval_list, next_interval)
+    next_interval = interval_list[interval_list > days_since]
+    if next_interval.empty:
+        next_updates = "N/A"
+        next_likelihood = "N/A"
+    else:
+        next_interval = next_interval.iloc[0]
+        next_updates = next_interval - days_since
+        next_likelihood = _get_likelihood(interval_list, next_interval)
 
-    next_updates = next_interval - days_since
     return likelihood, next_updates, next_likelihood
 
 
@@ -197,6 +202,8 @@ def _get_likelihood(interval_list: pd.Series, days_since: int) -> int:
     likelihood = int(len(intervals_lower) / len(interval_list) * 100)
     if likelihood == 0:
         return "low"
+    elif likelihood == 100:
+        return "very high"
     return likelihood
 
 
