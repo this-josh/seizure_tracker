@@ -99,7 +99,12 @@ def sort_font(fig: go.Figure) -> go.Figure:
     go.Figure
         A plotly figure with the updates
     """
-    fig.update_layout(font=dict(size=18,), showlegend=False)
+    fig.update_layout(
+        font=dict(
+            size=18,
+        ),
+        showlegend=False,
+    )
     return fig
 
 
@@ -122,7 +127,9 @@ def make_cluster_hist(interval_df: pd.DataFrame) -> go.Figure:
         go.Histogram(
             x=interval_df.interval_days,
             xbins=dict(start=0, end=40, size=1),
-            marker=dict(color="red",),
+            marker=dict(
+                color="red",
+            ),
             opacity=0.5,
         )
     )

@@ -44,13 +44,30 @@ elif days_since == 0:
 app.title = "Seizure Tracker"
 app.layout = html.Div(
     [
-        html.H1(children="Seizure Tracker", style={"textAlign": "center",}),
+        html.H1(
+            children="Seizure Tracker",
+            style={
+                "textAlign": "center",
+            },
+        ),
         html.Div(
             dcc.Markdown(f"""The last seizure was **{days_since}** days ago"""),
-            style={"textAlign": "center",},
+            style={
+                "textAlign": "center",
+            },
         ),
-        html.Div(dcc.Markdown(likelihood_message), style={"textAlign": "center",}),
-        html.Div(dcc.Markdown(next_cluster_size), style={"textAlign": "center",}),
+        html.Div(
+            dcc.Markdown(likelihood_message),
+            style={
+                "textAlign": "center",
+            },
+        ),
+        html.Div(
+            dcc.Markdown(next_cluster_size),
+            style={
+                "textAlign": "center",
+            },
+        ),
         html.Div(
             [
                 dcc.RadioItems(
