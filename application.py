@@ -125,3 +125,4 @@ def update_fig(fig_type: str) -> go.Figure:
 application = app.server
 if __name__ == "__main__":
     serve(application, url_scheme="https")
+
