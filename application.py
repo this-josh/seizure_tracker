@@ -4,7 +4,6 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import pandas as pd
 import flask
-import os
 from waitress import serve
 import plotly.graph_objects as go
 from trackerApp.make_graphs import make_timeseries, make_cluster_hist, make_time_hist
@@ -17,11 +16,12 @@ from trackerApp.statistical_params import (
     estimate_cluster_size,
 )
 from trackerApp.inout import get_data
+from trackerApp.constants import SEIZURE_SHEET
 
 
 server = flask.Flask(__name__)
 app = dash.Dash(__name__, server=server)
-df = get_data(os.getenv("SEIZURE_SHEET"))
+df = get_data(SEIZURE_SHEET)
 make_time_hist(df)
 clusters = get_clusters(df)
 cluster_info = get_cluster_info(clusters)
