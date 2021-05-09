@@ -17,12 +17,16 @@ from trackerApp.statistical_params import (
 )
 from trackerApp.inout import get_data
 from trackerApp.constants import SEIZURE_SHEET
+import felling
 
+felling.configure()
+import logging
+
+logger = logging.getLogger(__name__)
 
 server = flask.Flask(__name__)
 app = dash.Dash(__name__, server=server)
 df = get_data(SEIZURE_SHEET)
-make_time_hist(df)
 clusters = get_clusters(df)
 cluster_info = get_cluster_info(clusters)
 intervals = get_intervals(cluster_info)
@@ -34,11 +38,12 @@ if days_since >= 2:
     likelihood_message = f"""Making the current likelihood of a seizure **{likelihood}%**, this will update to {next_likelihood}% in {next_updates} days."""
     if isinstance(likelihood, str):
         likelihood_message = f"""Making the current likelihood of a seizure **{likelihood}**, this will update to {next_likelihood}% in {next_updates} days."""
-
 elif days_since == 1:
     likelihood_message = f"""As the most recent seizure was only {days_since} day ago, it is possible the cluster is still active"""
 elif days_since == 0:
     likelihood_message = f"""As the most recent seizure was today, it is possible the cluster is still active"""
+else:
+    likelihood_message = "Failed to produce likelihood message."
 
 
 app.title = "Seizure Tracker"
@@ -79,18 +84,26 @@ app.layout = html.Div(
                             "value": "bars_time_comparison",
                         },
                         {
-                            "label": "Hour of the day seizures have occured",
+                            "label": "Hour of the day seizures have occurred",
                             "value": "seizure_hour_comparison",
                         },
                     ],
                     value="bars_timeseries",
                     labelStyle={"display": "inline-block"},
+                    persistence=False,
                 ),
             ]
         ),
         dcc.Graph(id="bono-seizures", config={"responsive": "auto"}),
     ]
 )
+
+import gc
+
+del df
+del intervals
+del cluster_info
+gc.collect()
 
 
 @app.callback(
@@ -111,19 +124,37 @@ def update_fig(fig_type: str) -> go.Figure:
     go.Figure
         The appropriate figure
     """
-    if fig_type == "bars_time_comparison":
-        fig = make_cluster_hist(intervals)
-        return fig
-    elif fig_type == "seizure_hour_comparison":
+    df = get_data(SEIZURE_SHEET)
+    if fig_type == "seizure_hour_comparison":
         fig = make_time_hist(df)
-        return fig
-    fig = make_timeseries(cluster_info)
+    elif fig_type in ["bars_time_comparison", "bars_timeseries"]:
+        clusters = get_clusters(df)
+        cluster_info = get_cluster_info(clusters)
+
+        if fig_type == "bars_time_comparison":
+            intervals = get_intervals(cluster_info)
+            fig = make_cluster_hist(intervals)
+        elif fig_type == "bars_timeseries":
+            fig = make_timeseries(cluster_info)
+    try:
+        del df
+    except:
+        pass
+    try:
+        del intervals
+    except:
+        pass
+    try:
+        del cluster_info
+    except:
+        pass
+
+    gc.collect()
 
     return fig
 
 
 application = app.server
 if __name__ == "__main__":
-    print('Serving app on 8080')
+    print("Serving app on 8080")
     serve(application, port=8080, url_scheme="https")
-

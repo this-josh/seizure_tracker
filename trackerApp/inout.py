@@ -1,4 +1,7 @@
 import pandas as pd
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def get_data(df_url: str, print_tail: bool = False) -> pd.DataFrame:
@@ -22,4 +25,5 @@ def get_data(df_url: str, print_tail: bool = False) -> pd.DataFrame:
     df = df.set_index("Seizure")
     if print_tail:
         print(df.tail())
-    return df.sort_index()
+    df = df.sort_index()
+    return df

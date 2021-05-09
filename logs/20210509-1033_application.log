@@ -1,0 +1,27 @@
+2021-05-09 10:33:14 - Initial logs - INFO - configure_felling._initial_logs - on line 48 - Username: Josh - /Users/Josh/miniconda3/envs/seizure_tracker_app/lib/python3.9/site-packages/felling/src/configure_felling.py
+2021-05-09 10:33:14 - Initial logs - INFO - configure_felling._initial_logs - on line 49 - Most recent git commit hash: 6c8bc09e11d26e99d86612350c6d1045874d0a6d  - /Users/Josh/miniconda3/envs/seizure_tracker_app/lib/python3.9/site-packages/felling/src/configure_felling.py
+2021-05-09 10:33:15 - Initial logs - INFO - configure_felling._initial_logs - on line 52 - Git remote and branch info: * remote origin
+  Fetch URL: https://github.com/this-josh/seizure_tracker.git
+  Push  URL: https://github.com/this-josh/seizure_tracker.git
+  HEAD branch: master
+  Remote branches:
+    develop tracked
+    master  tracked
+  Local branches configured for 'git pull':
+    develop merges with remote develop
+    master  merges with remote master
+  Local refs configured for 'git push':
+    develop pushes to develop (up to date)
+    master  pushes to master  (up to date) - /Users/Josh/miniconda3/envs/seizure_tracker_app/lib/python3.9/site-packages/felling/src/configure_felling.py
+2021-05-09 10:33:17 - trackerApp.inout - INFO - inout.get_data - on line 29 - | Seizure                   |
+|:--------------------------|
+| 2021-03-03 12:34:00+00:00 |
+| 2021-03-25 19:17:00+00:00 |
+| 2021-03-26 00:01:00+00:00 |
+| 2021-03-26 05:00:00+00:00 |
+| 2021-04-17 20:16:00+00:00 |
+| 2021-04-18 06:22:00+00:00 |
+| 2021-04-18 16:27:00+00:00 |
+| 2021-05-07 20:58:00+00:00 |
+| 2021-05-08 17:09:00+00:00 |
+| 2021-05-08 21:04:00+00:00 | - /Users/Josh/Git_repos/bono-app/trackerApp/trackerApp/inout.py

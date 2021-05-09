@@ -54,7 +54,7 @@ def most_recent_seizure(df: pd.DataFrame) -> int:
     return time_diff.days
 
 
-def get_clusters(df: pd.DataFrame, gap_days=2) -> List[pd.DataFrame]:
+def get_clusters(df: pd.DataFrame, gap_days=3) -> List[pd.DataFrame]:
     """
     Take the seizures csv and group events into clusters
 
