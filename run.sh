@@ -3,4 +3,4 @@
 
 cd ~/git/seizure_tracker/seizure_tracker
 source seizure/bin/activate
-gunicorn application:application -b :8000
+gunicorn application:application -b :80
