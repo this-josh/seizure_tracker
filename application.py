@@ -155,6 +155,7 @@ def update_fig(fig_type: str) -> go.Figure:
 
 
 application = app.server
+logger.info("Ready to serve")
 if __name__ == "__main__":
-    print("Serving app on 8080")
+    logger.info("Serving app")
     serve(application, port=8080, url_scheme="https")
